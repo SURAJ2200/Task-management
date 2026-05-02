@@ -13,7 +13,7 @@ export default function Login() {
     e.preventDefault();
     setError(null);
     try {
-      const res = await API.post("/auth/login", form);
+      const res = await API.post("/api/auth/login", form);
       const data = res.data;
       if (!data || !data.token) {
         throw new Error("Login failed: Invalid server response");

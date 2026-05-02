@@ -17,7 +17,7 @@ export default function Projects() {
 
   const getProjects = async () => {
     try {
-      const res = await API.get("/projects");
+      const res = await API.get("/api/projects");
       setProjects(res.data.data || res.data);
     } catch (err) {
       console.log(err);
@@ -33,7 +33,7 @@ export default function Projects() {
     setProjectError("");
     if (!projectForm.name || !projectForm.description) return setProjectError("Please fill all fields");
     try {
-      const res = await API.post("/projects", { ...projectForm, members: [] });
+      const res = await API.post("/api/projects", { ...projectForm, members: [] });
       setProjects([...projects, res.data.data || res.data]);
       setShowProjectForm(false);
       setProjectForm({ name: "", description: "" });
@@ -47,7 +47,7 @@ export default function Projects() {
     const userId = memberInputs[projectId];
     if (!userId) return;
     try {
-      await API.post(`/projects/${projectId}/members`, { userId });
+      await API.post(`/api/projects/${projectId}/members`, { userId });
       setMemberInputs({ ...memberInputs, [projectId]: "" });
       setMemberErrors({ ...memberErrors, [projectId]: "" });
       await getProjects();
@@ -59,7 +59,7 @@ export default function Projects() {
   const removeMember = async (projectId, memberId) => {
     if (!window.confirm("Remove this member?")) return;
     try {
-      await API.delete(`/projects/${projectId}/remove-member/${memberId}`);
+      await API.delete(`/api/projects/${projectId}/remove-member/${memberId}`);
       setProjects((prev) => 
         prev.map(p => {
           if (p._id === projectId) {

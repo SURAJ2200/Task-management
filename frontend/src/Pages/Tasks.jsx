@@ -17,7 +17,7 @@ export default function Tasks() {
   useEffect(() => {
     const getTasks = async () => {
       try {
-        const endpoint = user?.role === "admin" ? "/tasks" : "/tasks/my";
+        const endpoint = user?.role === "admin" ? "/api/tasks" : "/api/tasks/my";
         const res = await API.get(endpoint);
         setTasks(res.data.data || res.data);
       } catch (err) {
@@ -28,7 +28,7 @@ export default function Tasks() {
     getTasks();
 
     if (user?.role === "admin") {
-      API.get("/projects").then(res => setProjects(res.data.data || res.data)).catch(console.log);
+      API.get("/api/projects").then(res => setProjects(res.data.data || res.data)).catch(console.log);
     }
   }, [user]);
 
@@ -43,8 +43,8 @@ export default function Tasks() {
     }
     
     try {
-      await API.post("/tasks", taskForm);
-      const endpoint = user?.role === "admin" ? "/tasks" : "/tasks/my";
+      await API.post("/api/tasks", taskForm);
+      const endpoint = user?.role === "admin" ? "/api/tasks" : "/api/tasks/my";
       const freshTasks = await API.get(endpoint);
       setTasks(freshTasks.data.data || freshTasks.data);
       
@@ -57,7 +57,7 @@ export default function Tasks() {
 
   const updateStatus = async (id, status) => {
     try {
-      await API.patch(`/tasks/${id}`, { status });
+      await API.patch(`/api/tasks/${id}`, { status });
       setTasks((prev) =>
         prev.map((task) =>
           task._id === id ? { ...task, status } : task
@@ -71,7 +71,7 @@ export default function Tasks() {
   const deleteTask = async (id) => {
     if (!window.confirm("Are you sure you want to delete this task?")) return;
     try {
-      await API.delete(`/tasks/${id}`);
+      await API.delete(`/api/tasks/${id}`);
       setTasks((prev) => prev.filter((task) => task._id !== id));
     } catch (err) {
       console.log(err);

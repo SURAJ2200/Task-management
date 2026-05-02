@@ -19,7 +19,7 @@ export default function MemberDashboard() {
 
     const getDashboard = async () => {
       try {
-        const res = await API.get("/tasks/dashboard");
+        const res = await API.get("/api/tasks/dashboard");
         setData(res.data.data || res.data);
       } catch (err) {
         console.log(err);
